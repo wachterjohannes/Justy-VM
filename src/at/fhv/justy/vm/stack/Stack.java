@@ -26,13 +26,26 @@ public class Stack {
 	}
 
 	public void addConstant(int address, int value) {
-		this.put(constantPoolStart+address, value);
+		this.put(constantPoolStart + address, value);
 	}
 
 	public void createStackFrame(int paramSize, int localVarSize, int stackSize) {
-		StackFrame stackFrame = new StackFrame(this, this.getHighest()
-				- paramSize, localVarSize, stackSize);
-		this.stackFrames.add(stackFrame);
+		int highest = this.getHighest();
+
+		if (this.stackFrames.size() > 0) {
+			highest = this.stackFrames.getLast().getStackPointer();
+		}
+		for (int i = 0; i < paramSize; i++) {
+			this.pop();
+		}
+
+		StackFrame stackFrame = new StackFrame(this, highest - paramSize,
+				localVarSize, stackSize);
+		this.stackFrames.addLast(stackFrame);
+	}
+
+	public void destroyStackFrame() {
+		this.stackFrames.removeLast();
 	}
 
 	public int get(int address) {
@@ -88,6 +101,10 @@ public class Stack {
 	}
 
 	public String toString() {
-		return this.getString(0, this.getHighest());
+		StringBuilder sb = new StringBuilder();
+		for (StackFrame stackFrame : this.stackFrames) {
+			sb.append(stackFrame.toString());
+		}
+		return sb.toString();
 	}
 }
