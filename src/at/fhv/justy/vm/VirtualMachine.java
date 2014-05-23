@@ -22,18 +22,29 @@ public class VirtualMachine {
 	public void init() {
 		stack = new Stack(3);
 
-		stack.setConstant(0, 10);
-		stack.setConstant(1, 20);
+		stack.setConstant(0, 1);
+		stack.setConstant(1, 0);
 		stack.setConstant(2, 30);
+		stack.setConstant(3, 3);
 
 		Method mainMethod = new Method("main", "()V", 2, 1, new String[] {
-				"LDC_W 0", "LDC_W 1", "IADD", "ISTORE 0", "ILOAD 0",
-				"PUTSTATIC 2", "GETSTATIC 2", "INVOKESTATIC 11", "ISTORE 0" });
+				"LDC_W 3", "INVOKESTATIC 12", "ISTORE 0" });
 		this.methods.put(10, mainMethod);
 
-		Method doItMethod = new Method("doIt", "(I)I", 2, 1, new String[] {
-				"LDC_W 2", "ILOAD 0", "IMUL", "IRETURN" });
-		this.methods.put(11, doItMethod);
+		String codeLines = "L1: NOP\n" + "    LDC_W 1\n" + "    ISTORE 1\n"
+				+ "    LDC_W 0\n" + "    ISTORE 2\n" + "    LDC_W 1\n"
+				+ "    ISTORE 3\n" + "    LDC_W 0\n" + "    ISTORE 4\n"
+				+ "    NOP\n" + "    ILOAD 2\n" + "    ILOAD 0\n"
+				+ "    IF_ICMPEQ L2\n" + "    ILOAD 3\n" + "    ILOAD 4\n"
+				+ "    IADD\n" + "    ISTORE 5\n" + "    ILOAD 4\n"
+				+ "    ISTORE 3\n" + "    ILOAD 5\n" + "    ISTORE 4\n"
+				+ "    ILOAD 2\n" + "    LDC_W 0\n" + "    IADD\n"
+				+ "    ISTORE 2\n" + "    GOTO L1\n" + "L2: NOP\n"
+				+ "    ILOAD 4\n" + "    IRETURN";
+
+		Method fibonacciMethod = new Method("fibonacci", "(I)I", 10, 6,
+				codeLines.split("\n"));
+		this.methods.put(12, fibonacciMethod);
 
 		this.invoke(10);
 	}

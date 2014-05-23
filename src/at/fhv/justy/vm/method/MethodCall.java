@@ -59,10 +59,52 @@ public class MethodCall {
 			case "IRETURN":
 				line = this.ireturn(line);
 				break;
+			case "IF_ICMPEQ":
+				line = this.if_icmpeq(line, parts[1]);
+				break;
+			case "IF_ICMPNE":
+				line = this.if_icmpne(line, parts[1]);
+				break;
+			case "GOTO":
+				line = this.simpleGoto(line, parts[1]);
+				break;
+			case "NOP":
+				line++;
+				break;
 			default:
 				throw new NotImplementedException();
 			}
 			System.out.println(stack.toString() + "\n");
+		}
+	}
+
+	// goto
+	private int simpleGoto(int line, String label) {
+		return this.method.getCodeLineByLabel(label);
+	}
+
+	// comparison
+	private int if_icmpne(int line, String label) {
+		int value1 = stack.pop();
+		int value2 = stack.pop();
+
+		// different value jump to label
+		if (value1 != value2) {
+			return this.method.getCodeLineByLabel(label);
+		} else {
+			return line + 1;
+		}
+	}
+
+	private int if_icmpeq(int line, String label) {
+		int value1 = stack.pop();
+		int value2 = stack.pop();
+
+		// same value jump to label
+		if (value1 == value2) {
+			return this.method.getCodeLineByLabel(label);
+		} else {
+			return line + 1;
 		}
 	}
 
@@ -122,6 +164,7 @@ public class MethodCall {
 		return line + 1;
 	}
 
+	// returns
 	private int simpleReturn(int line) {
 		// break this method
 		this.stack.destroyStackFrame();

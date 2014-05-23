@@ -43,10 +43,24 @@ public class Method {
 	}
 
 	public String getCode(int line) {
-		return this.code[line];
+		String codeLine = this.code[line].trim();
+		if (codeLine.contains(":")) {
+			return codeLine.split(": ")[1];
+		}
+		return codeLine;
 	}
 
 	public String[] getCode() {
 		return this.code;
+	}
+
+	public int getCodeLineByLabel(String label) {
+		for (int i = 0; i < this.code.length; i++) {
+			String codeLine = this.code[i].trim();
+			if (codeLine.startsWith(label + ":")) {
+				return i;
+			}
+		}
+		throw new RuntimeException("label not found");
 	}
 }
