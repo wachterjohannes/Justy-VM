@@ -25,16 +25,16 @@ public class VirtualMachine {
 		stack.setConstant(0, 1);
 		stack.setConstant(1, 0);
 		stack.setConstant(2, 30);
-		stack.setConstant(3, 3);
+		stack.setConstant(3, 8);
 
 		Method mainMethod = new Method("main", "()V", 2, 1, new String[] {
 				"LDC_W 3", "INVOKESTATIC 12", "ISTORE 0" });
 		this.methods.put(10, mainMethod);
 
-		String codeLines = "L1: NOP\n" + "    LDC_W 1\n" + "    ISTORE 1\n"
+		String codeLines = "    LDC_W 1\n" + "    ISTORE 1\n"
 				+ "    LDC_W 0\n" + "    ISTORE 2\n" + "    LDC_W 1\n"
 				+ "    ISTORE 3\n" + "    LDC_W 0\n" + "    ISTORE 4\n"
-				+ "    NOP\n" + "    ILOAD 2\n" + "    ILOAD 0\n"
+				+ "L1: NOP\n" + "    ILOAD 2\n" + "    ILOAD 0\n"
 				+ "    IF_ICMPEQ L2\n" + "    ILOAD 3\n" + "    ILOAD 4\n"
 				+ "    IADD\n" + "    ISTORE 5\n" + "    ILOAD 4\n"
 				+ "    ISTORE 3\n" + "    ILOAD 5\n" + "    ISTORE 4\n"

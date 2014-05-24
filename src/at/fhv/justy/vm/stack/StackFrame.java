@@ -111,7 +111,7 @@ public class StackFrame {
 
 		sb.append("Stack:\n");
 		sb.append(this.stack.getString(this.stackStart, stackSize));
-		sb.append("End StackFrame\n-------");
+		sb.append("End StackFrame\n-------\n");
 		
 		return sb.toString();
 	}
