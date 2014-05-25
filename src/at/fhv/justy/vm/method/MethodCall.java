@@ -2,14 +2,14 @@ package at.fhv.justy.vm.method;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import at.fhv.justy.vm.VirtualMachine;
-import at.fhv.justy.vm.stack.Stack;
+import at.fhv.justy.vm.stack.ApplicationStack;
 
 public class MethodCall {
 	private VirtualMachine vm;
-	private Stack stack;
+	private ApplicationStack stack;
 	private Method method;
 
-	public MethodCall(VirtualMachine vm, Stack stack, Method method) {
+	public MethodCall(VirtualMachine vm, ApplicationStack stack, Method method) {
 		this.vm = vm;
 		this.stack = stack;
 		this.method = method;

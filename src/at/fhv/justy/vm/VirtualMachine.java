@@ -12,7 +12,7 @@ public class VirtualMachine {
 		vm.init();
 	}
 
-	private Stack stack;
+	private ApplicationStack stack;
 
 	private HashMap<Integer, Method> methods = new HashMap<>();
 
@@ -20,7 +20,7 @@ public class VirtualMachine {
 	}
 
 	public void init() {
-		stack = new Stack(3);
+		stack = new ApplicationStack(3);
 
 		stack.setConstant(0, 1);
 		stack.setConstant(1, 0);

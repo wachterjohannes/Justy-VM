@@ -1,7 +1,7 @@
 package at.fhv.justy.vm.stack;
 
 public class StackFrame {
-	private Stack stack;
+	private ApplicationStack stack;
 
 	private int stackStart;
 	private int stackSize;
@@ -14,7 +14,7 @@ public class StackFrame {
 	private int start;
 	private int size;
 
-	public StackFrame(Stack stack, int start, int localVarSize, int stackSize) {
+	public StackFrame(ApplicationStack stack, int start, int localVarSize, int stackSize) {
 		this.stack = stack;
 
 		this.start = start;
