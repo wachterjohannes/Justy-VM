@@ -90,6 +90,10 @@ public class ApplicationStack {
 		return this.getConstant(address);
 	}
 
+	public void free(int address) {
+		this.stack.free(address);
+	}
+
 	public String getString(int start, int size) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = start; i < start + size; i++) {

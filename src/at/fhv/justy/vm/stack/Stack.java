@@ -5,28 +5,29 @@ import java.nio.ByteBuffer;
 import at.fhv.justy.vm.stack.StackEntry.Type;
 
 public class Stack {
-	private byte[] values = new byte[100000];
 	private StackEntry[] entries = new StackEntry[100];
 
 	private int highestAddress = 0;
 
-	public void putInteger(int address, int value) {
-		StackEntry entry;
-		byte[] bytes = ByteBuffer.allocate(4).putInt(value).array();
-
-		if (this.entries[address] != null
-				&& entries[address].getType() == Type.integerType) {
-			entry = this.entries[address];
+	private void createStackEntry(int address, byte[] bytes, Type type) {
+		if (this.entries[address] != null) {
+			StackEntry entry = this.entries[address];
+			entry.setBytes(bytes);
 		} else {
-			entry = new StackEntry(highestAddress, bytes.length,
-					Type.integerType);
-			this.entries[address] = entry;
+			this.entries[address] = new StackEntry(highestAddress,
+					bytes.length, type, bytes);
 			this.highestAddress += bytes.length;
 		}
+		System.out.println("HA: " + this.highestAddress);
+	}
 
-		for (int i = 0; i < bytes.length; i++) {
-			this.values[entry.getStartAddress() + i] = bytes[i];
-		}
+	public void free(int address) {
+		this.entries[address] = null;
+	}
+
+	public void putInteger(int address, int value) {
+		byte[] bytes = ByteBuffer.allocate(4).putInt(value).array();
+		this.createStackEntry(address, bytes, Type.integerType);
 	}
 
 	public int getInteger(int address) {
@@ -35,11 +36,8 @@ public class Stack {
 			return 0;
 		}
 
-		byte[] bytes = new byte[4];
-		for (int i = 0; i < 4; i++) {
-			bytes[i] = this.values[entry.getStartAddress() + i];
-		}
-
-		return ByteBuffer.wrap(bytes).getInt();
+		byte[] bytes = entry.getBytes();
+		int result = ByteBuffer.wrap(bytes).getInt();
+		return result;
 	}
 }

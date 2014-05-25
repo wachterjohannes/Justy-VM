@@ -14,7 +14,8 @@ public class StackFrame {
 	private int start;
 	private int size;
 
-	public StackFrame(ApplicationStack stack, int start, int localVarSize, int stackSize) {
+	public StackFrame(ApplicationStack stack, int start, int localVarSize,
+			int stackSize) {
 		this.stack = stack;
 
 		this.start = start;
@@ -73,6 +74,7 @@ public class StackFrame {
 		}
 		int sp = this.decreaseStackPointer();
 		int value = this.stack.get(sp);
+		stack.free(sp);
 		return value;
 	}
 
@@ -101,7 +103,7 @@ public class StackFrame {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("Start StackFrame\n");
 		sb.append("LocalVars:\n");
 		sb.append(this.stack.getString(this.start, localVarSize));
@@ -112,7 +114,7 @@ public class StackFrame {
 		sb.append("Stack:\n");
 		sb.append(this.stack.getString(this.stackStart, stackSize));
 		sb.append("End StackFrame\n-------\n");
-		
+
 		return sb.toString();
 	}
 }

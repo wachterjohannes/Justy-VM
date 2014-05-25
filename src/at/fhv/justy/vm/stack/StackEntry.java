@@ -8,11 +8,13 @@ public class StackEntry {
 	private int startAddress;
 	private int length;
 	private Type type;
+	private byte[] bytes;
 
-	public StackEntry(int startAddress, int length, Type type) {
+	public StackEntry(int startAddress, int length, Type type, byte[] bytes) {
 		this.startAddress = startAddress;
 		this.length = length;
 		this.type = type;
+		this.bytes = bytes;
 	}
 
 	public int getStartAddress() {
@@ -25,5 +27,13 @@ public class StackEntry {
 
 	public Type getType() {
 		return type;
+	}
+
+	public byte[] getBytes() {
+		return bytes;
+	}
+
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
 	}
 }
