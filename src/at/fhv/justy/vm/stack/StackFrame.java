@@ -74,7 +74,6 @@ public class StackFrame {
 		}
 		int sp = this.decreaseStackPointer();
 		int value = this.stack.get(sp);
-		stack.free(sp);
 		return value;
 	}
 

@@ -2,23 +2,17 @@ package at.fhv.justy.vm.stack;
 
 public class StackEntry {
 	public enum Type {
-		integerType, stringType, byteType, charType
+		integerType, stringType, charType, byteType
 	};
 
-	private int startAddress;
 	private int length;
 	private Type type;
 	private byte[] bytes;
 
-	public StackEntry(int startAddress, int length, Type type, byte[] bytes) {
-		this.startAddress = startAddress;
-		this.length = length;
+	public StackEntry(byte[] bytes, Type type) {
+		this.length = bytes.length;
 		this.type = type;
 		this.bytes = bytes;
-	}
-
-	public int getStartAddress() {
-		return startAddress;
 	}
 
 	public int getLength() {
@@ -33,7 +27,12 @@ public class StackEntry {
 		return bytes;
 	}
 
+	public void setType(Type type) {
+		this.type = type;
+	}
+
 	public void setBytes(byte[] bytes) {
 		this.bytes = bytes;
+		this.length = bytes.length;
 	}
 }

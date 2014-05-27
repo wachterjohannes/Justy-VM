@@ -46,12 +46,12 @@ public class ApplicationStack {
 	}
 
 	public int get(int address) {
-		int value = this.stack.getInteger(address);
+		int value = (int) this.stack.get(address);
 		return value;
 	}
 
 	public void put(int address, int value) {
-		this.stack.putInteger(address, value);
+		this.stack.put(address, value);
 	}
 
 	public void addConstant(int address, int value) {
@@ -88,10 +88,6 @@ public class ApplicationStack {
 
 	public int getGlobalVar(int address) {
 		return this.getConstant(address);
-	}
-
-	public void free(int address) {
-		this.stack.free(address);
 	}
 
 	public String getString(int start, int size) {
