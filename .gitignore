@@ -2,6 +2,10 @@
 .classpath
 .project
 
+# intelli
+*.iml
+.idea
+
 # Java
 *.class
 

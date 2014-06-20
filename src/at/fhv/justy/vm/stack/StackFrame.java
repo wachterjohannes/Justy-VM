@@ -32,7 +32,7 @@ public class StackFrame {
 		this.stack.put(stackPointer, this.stackStart);
 	}
 
-	public int getStackPointer() {
+	public int getStackPointer()  {
 		return this.stack.get(stackPointer);
 	}
 
