@@ -1,8 +1,8 @@
-package at.fhv.justy.vm.stack;
+package at.fhv.justy.vm.old.stack;
 
 import java.nio.ByteBuffer;
 
-import at.fhv.justy.vm.stack.StackEntry.Type;
+import at.fhv.justy.vm.old.stack.StackEntry.Type;
 
 public class Stack {
 	private StackEntry[] entries = new StackEntry[100];

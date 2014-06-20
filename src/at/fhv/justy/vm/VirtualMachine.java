@@ -1,57 +1,67 @@
 package at.fhv.justy.vm;
 
-import java.util.HashMap;
+import at.fhv.justy.vm.clazz.Clazz;
+import at.fhv.justy.vm.clazz.Loader;
+import at.fhv.justy.vm.constant.ConstantPool;
+import org.xml.sax.SAXException;
 
-import at.fhv.justy.vm.method.Method;
-import at.fhv.justy.vm.method.MethodCall;
-import at.fhv.justy.vm.stack.*;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VirtualMachine {
-	public static void main(String[] args) {
-		VirtualMachine vm = new VirtualMachine();
-		vm.init();
-	}
+    public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+        VirtualMachine vm = new VirtualMachine();
+        vm.init();
 
-	private ApplicationStack stack;
+        vm.run();
+    }
 
-	private HashMap<Integer, Method> methods = new HashMap<>();
+    private CodeContainer codeContainer = new CodeContainer();
+    private ConstantPool constantPool = new ConstantPool();
+    private List<Clazz> clazzes = new ArrayList<>();
+    private List<Thread> threads = new ArrayList<>();
 
 	public VirtualMachine() {
 	}
 
-	public void init() {
-		stack = new ApplicationStack(3);
+    public void init() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+        // init loader
+        Loader clazzLoader = new Loader();
 
-		stack.setConstant(0, 1);
-		stack.setConstant(1, 0);
-		stack.setConstant(2, 30);
-		stack.setConstant(3, 8);
+        // init class
+        Clazz clazz = clazzLoader.load("just/fibonacci.jl", codeContainer, constantPool);
+        clazzes.add(clazz);
 
-		Method mainMethod = new Method("main", "()V", 2, 1, new String[] {
-				"LDC_W 3", "INVOKESTATIC 12", "ISTORE 0" });
-		this.methods.put(10, mainMethod);
+        // init thread
+        threads.add(new Thread(clazz.getMainMethod().getStart(), this));
+    }
 
-		String codeLines = "    LDC_W 1\n" + "    ISTORE 1\n"
-				+ "    LDC_W 0\n" + "    ISTORE 2\n" + "    LDC_W 1\n"
-				+ "    ISTORE 3\n" + "    LDC_W 0\n" + "    ISTORE 4\n"
-				+ "L1: NOP\n" + "    ILOAD 2\n" + "    ILOAD 0\n"
-				+ "    IF_ICMPEQ L2\n" + "    ILOAD 3\n" + "    ILOAD 4\n"
-				+ "    IADD\n" + "    ISTORE 5\n" + "    ILOAD 4\n"
-				+ "    ISTORE 3\n" + "    ILOAD 5\n" + "    ISTORE 4\n"
-				+ "    ILOAD 2\n" + "    LDC_W 0\n" + "    IADD\n"
-				+ "    ISTORE 2\n" + "    GOTO L1\n" + "L2: NOP\n"
-				+ "    ILOAD 4\n" + "    IRETURN";
+    public void run() {
+        while (true) {
+            threads.get(0).run();
+        }
+    }
 
-		Method fibonacciMethod = new Method("fibonacci", "(I)I", 10, 6,
-				codeLines.split("\n"));
-		this.methods.put(12, fibonacciMethod);
+    public Integer execute(Integer pc, Thread thread) {
+        String codeLine = codeContainer.getLine(pc);
+        String[] parts = codeLine.split(" ");
 
-		this.invoke(10);
-	}
+        switch (parts[0]) {
+            case "LDC_W":
+                pc = this.ldc_w(thread, pc, Integer.parseInt(parts[1]));
+                break;
+        }
 
-	public void invoke(int address) {
-		Method method = this.methods.get(address);
-		MethodCall call = new MethodCall(this, this.stack, method);
-		call.invoke();
-	}
+        return pc;
+    }
+
+    // constants
+    private int ldc_w(Thread thread, int pc, int address) {
+        int value = this.constantPool.getIntegerConstant(address);
+        thread.push(value);
+        return pc + 1;
+    }
 }

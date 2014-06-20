@@ -1,4 +1,4 @@
-package at.fhv.justy.vm.method;
+package at.fhv.justy.vm.old.method;
 
 public class Method {
 	private int paramSize;

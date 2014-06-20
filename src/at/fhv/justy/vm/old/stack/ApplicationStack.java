@@ -1,4 +1,4 @@
-package at.fhv.justy.vm.stack;
+package at.fhv.justy.vm.old.stack;
 
 import java.util.LinkedList;
 

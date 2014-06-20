@@ -1,0 +1,28 @@
+program CTest {
+	void main() {
+		var int a;
+   		a = call fibonacci(1);
+   	}
+   	
+	int fibonacci(int limit) {
+		var int result;
+		var int i;
+		var int fib1;
+		var int fib2;
+		var int newFib;
+		
+		result = 0;
+		i = 1;
+		fib1 = 0;
+		fib2 = 1;
+		while(i != limit) {
+			newFib = fib1+fib2;
+			fib1 = fib2;
+			fib2 = newFib;
+			i=i+1;
+		}
+		return fib2;
+	}
+
+	var int global;
+}

@@ -1,8 +1,8 @@
-package at.fhv.justy.vm.method;
+package at.fhv.justy.vm.old.method;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import at.fhv.justy.vm.VirtualMachine;
-import at.fhv.justy.vm.stack.ApplicationStack;
+import at.fhv.justy.vm.old.VirtualMachine;
+import at.fhv.justy.vm.old.stack.ApplicationStack;
 
 public class MethodCall {
 	private VirtualMachine vm;
